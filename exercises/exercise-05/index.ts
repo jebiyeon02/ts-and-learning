@@ -22,86 +22,97 @@ Higher difficulty bonus exercise:
 */
 
 interface User {
-    type: 'user';
-    name: string;
-    age: number;
-    occupation: string;
+  type: "user";
+  name: string;
+  age: number;
+  occupation: string;
 }
 
 interface Admin {
-    type: 'admin';
-    name: string;
-    age: number;
-    role: string;
+  type: "admin";
+  name: string;
+  age: number;
+  role: string;
 }
 
 export type Person = User | Admin;
 
 export const persons: Person[] = [
-    { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
-    {
-        type: 'admin',
-        name: 'Jane Doe',
-        age: 32,
-        role: 'Administrator'
-    },
-    {
-        type: 'user',
-        name: 'Kate Müller',
-        age: 23,
-        occupation: 'Astronaut'
-    },
-    {
-        type: 'admin',
-        name: 'Bruce Willis',
-        age: 64,
-        role: 'World saver'
-    },
-    {
-        type: 'user',
-        name: 'Wilson',
-        age: 23,
-        occupation: 'Ball'
-    },
-    {
-        type: 'admin',
-        name: 'Agent Smith',
-        age: 23,
-        role: 'Administrator'
-    }
+  {
+    type: "user",
+    name: "Max Mustermann",
+    age: 25,
+    occupation: "Chimney sweep",
+  },
+  {
+    type: "admin",
+    name: "Jane Doe",
+    age: 32,
+    role: "Administrator",
+  },
+  {
+    type: "user",
+    name: "Kate Müller",
+    age: 23,
+    occupation: "Astronaut",
+  },
+  {
+    type: "admin",
+    name: "Bruce Willis",
+    age: 64,
+    role: "World saver",
+  },
+  {
+    type: "user",
+    name: "Wilson",
+    age: 23,
+    occupation: "Ball",
+  },
+  {
+    type: "admin",
+    name: "Agent Smith",
+    age: 23,
+    role: "Administrator",
+  },
 ];
 
-export const isAdmin = (person: Person): person is Admin => person.type === 'admin';
-export const isUser = (person: Person): person is User => person.type === 'user';
+export const isAdmin = (person: Person): person is Admin =>
+  person.type === "admin";
+export const isUser = (person: Person): person is User =>
+  person.type === "user";
 
 export function logPerson(person: Person) {
-    let additionalInformation = '';
-    if (isAdmin(person)) {
-        additionalInformation = person.role;
-    }
-    if (isUser(person)) {
-        additionalInformation = person.occupation;
-    }
-    console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
+  let additionalInformation = "";
+  if (isAdmin(person)) {
+    additionalInformation = person.role;
+  }
+  if (isUser(person)) {
+    additionalInformation = person.occupation;
+  }
+  console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
 }
 
-export function filterUsers(persons: Person[], criteria: User): User[] {
-    return persons.filter(isUser).filter((user) => {
-        const criteriaKeys = Object.keys(criteria) as (keyof User)[];
-        return criteriaKeys.every((fieldName) => {
-            return user[fieldName] === criteria[fieldName];
-        });
+// 문제 정의 : 밑에 함수 호출 부에서 {age:23} 이런 식으로 넘기고 있음
+// 예상 풀이법 : filterUsers의 creteria 파라미터의 타입을 User가 아니라 User 안에있는 프로퍼티 1개라고 하면 될 것 같음
+// 방법은 모름
+
+export function filterUsers(
+  persons: Person[],
+  criteria: Partial<User>,
+): User[] {
+  return persons.filter(isUser).filter((user) => {
+    const criteriaKeys = Object.keys(criteria) as (keyof User)[];
+    return criteriaKeys.every((fieldName) => {
+      return user[fieldName] === criteria[fieldName];
     });
+  });
 }
 
-console.log('Users of age 23:');
+console.log("Users of age 23:");
 
-filterUsers(
-    persons,
-    {
-        age: 23
-    }
-).forEach(logPerson);
+filterUsers(persons, {
+  age: 23,
+}).forEach(logPerson);
 
 // In case you are stuck:
 // https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype
