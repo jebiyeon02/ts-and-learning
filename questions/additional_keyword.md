@@ -3,3 +3,5 @@
 1. Exhaustiveness Checking
 
 2. 객체 리터럴 검사(Excess Property Checking)
+
+3. Partial<Admin> | Partial<User>과 Partial<Person>의 결과가 완전히 일치하나?
