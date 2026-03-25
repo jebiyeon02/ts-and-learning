@@ -92,16 +92,12 @@ export function logPerson(person: Person) {
   console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
 }
 
-// 문제 정의 : 밑에 함수 호출 부에서 {age:23} 이런 식으로 넘기고 있음
-// 예상 풀이법 : filterUsers의 creteria 파라미터의 타입을 User가 아니라 User 안에있는 프로퍼티 1개라고 하면 될 것 같음
-// 방법은 모름
-
 export function filterUsers(
   persons: Person[],
-  criteria: Partial<User>,
+  criteria: Partial<Omit<User, "type">>,
 ): User[] {
   return persons.filter(isUser).filter((user) => {
-    const criteriaKeys = Object.keys(criteria) as (keyof User)[];
+    const criteriaKeys = Object.keys(criteria) as (keyof Omit<User, "type">)[];
     return criteriaKeys.every((fieldName) => {
       return user[fieldName] === criteria[fieldName];
     });
